@@ -1,0 +1,25 @@
+name: workflow b
+
+on:
+  merge_group:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - dequeued
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep 1
+        if: github.event_name == 'pull_request'
+      - run: sleep 120
+        if: github.event_name == 'merge_group'
+
+  status-checks:
+    runs-on: ubuntu-latest
+    needs: job1
+    if: always()
+    steps:
+      - run: echo exit
