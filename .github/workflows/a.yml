@@ -16,13 +16,18 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
-      - run: sleep 1
-        if: github.event_name == 'pull_request'
       - run: |
           MIN=3
           MAX=10
           RANDOM_NUM=$(( RANDOM % (MAX - MIN + 1) + MIN ))
           sleep $RANDOM_NUM
+        if: github.event_name == 'pull_request'
+        shell: bash -xeuo pipefail {0}
+      - run: |
+          MIN=3
+          MAX=10
+          RANDOM_NUM=$(( RANDOM % (MAX - MIN + 1) + MIN ))
+          sleep $(( RANDOM_NUM * 10 ))
         if: github.event_name == 'merge_group'
         shell: bash -xeuo pipefail {0}
 
